@@ -24,3 +24,22 @@ Content-Type: application/json
 
 ###
 DELETE   http://localhost:5000/api/prompts/1
+
+###
+POST  http://localhost:5000/api/histories
+Content-Type: application/json
+
+{
+    "ChatId" : 2,
+    "BubbleId" : 2,
+    "Text": "Halo2",
+    "Sender":"user"
+}
+
+###
+
+GET http://localhost:5000/api/histories
+
+###
+
+GET http://localhost:5000/api/histories/1

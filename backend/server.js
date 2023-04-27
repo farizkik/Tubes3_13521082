@@ -9,6 +9,7 @@ const bodyParser = require("body-parser");
 // SETUP DATABASE
 const db = require("./models");
 const promptRoutes = require("./routes/PromptRoute.js");
+const historyRoutes = require('./routes/HistoryRoute')
 
 // SETUP VARIABLE
 const PORT = process.env.PORT;
@@ -37,6 +38,7 @@ db.sequelize.sync({ force: true }).then(() => {
 
 // ADD ROUTES
 promptRoutes(app);
+historyRoutes(app);
 
 // PUT BACKEND ON PORT
 app.listen(PORT, () => {

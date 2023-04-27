@@ -4,6 +4,7 @@ const Sequelize = require("sequelize")
 // SETUP FILE
 const dbConfig = require("../config/Database.js")
 const prompt = require("./PromptModel.js")
+const history = require("./HistoryModel.js")
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
@@ -22,5 +23,6 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 const db = {}
 db.sequelize = sequelize
 db.prompts = prompt(sequelize)
+db.histories = history(sequelize)
 
 module.exports = db
