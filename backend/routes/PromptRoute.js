@@ -1,18 +1,18 @@
-import express from "express";
-import {
-    getPrompts, 
-    getPromptById,
-    createPrompt,
-    updatePrompt,
-    deletePrompt
-} from "../controllers/PromptController.js";
+// SETUP LIBRARY
+const express = require("express")
 
-const router = express.Router();
+// SETUP FILE
+const prompts = require("../controllers/PromptController.js")
 
-router.get('/prompts', getPrompts);
-router.get('/prompts/:id', getPromptById);
-router.post('/prompts', createPrompt);
-router.patch('/prompts/:id',updatePrompt);
-router.delete('/prompts/:id',deletePrompt);
+module.exports = (app) => {
+    const router = express.Router()
 
-export default router;
+    router.post("/", prompts.create)
+    router.get("/:Id", prompts.findOne)
+    router.get("/", prompts.findAll)
+    router.patch("/:Id", prompts.update)
+    router.delete("/:Id", prompts.delete)
+    router.delete("/", prompts.deleteAll)
+
+    app.use("/api/prompts", router)
+}

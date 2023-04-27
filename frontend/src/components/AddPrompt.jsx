@@ -3,16 +3,16 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 
 const AddPrompt = () => {
-    const [question, setQuestion] = useState("");
-    const [answer, setAnswer] = useState("");
+    const [Question, setQuestion] = useState("");
+    const [Answer, setAnswer] = useState("");
     const navigate = useNavigate();
 
     const savePrompt = async (e) =>{
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/prompts',{
-                question,
-                answer
+            await axios.post('http://localhost:5000/api/prompts',{
+                Question: Question,
+                Answer: Answer
             });
             navigate("/");
         } catch (error) {
@@ -30,7 +30,7 @@ const AddPrompt = () => {
                         <input 
                         type="text" 
                         className="input" 
-                        value={question} 
+                        value={Question} 
                         onChange={(e)=> setQuestion(e.target.value)}
                         placeholder='Question'/>
                     </div>
@@ -41,7 +41,7 @@ const AddPrompt = () => {
                         <input 
                         type="text" 
                         className="input" 
-                        value={answer} 
+                        value={Answer} 
                         onChange={(e)=> setAnswer(e.target.value)}
                         placeholder='Answer'/>
                     </div>

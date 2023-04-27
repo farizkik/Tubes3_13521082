@@ -1,17 +1,22 @@
-import { Sequelize } from "sequelize";
-import db from "../config/Database.js";
+// SETUP LIBRARY
+const Sequelize = require("sequelize")
 
-const {DataTypes} = Sequelize;
-
-const Prompt = db.define('prompts',{
-    question: DataTypes.STRING,
-    answer: DataTypes.STRING
-},{
-    freezeTableName:true
-});
-
-export default Prompt;
-
-(async()=>{
-    await db.sync();
-})();
+module.exports = (sequelize) => {
+    const Prompt = sequelize.define("Prompt", {
+        Id : {
+            type: Sequelize.INTEGER.UNSIGNED,
+            autoIncrement: true,
+            primaryKey: true
+        },
+        Question: {
+            type: Sequelize.TEXT("long"),
+            unique: true,
+            allowNull: false
+        },
+        Answer: {
+            type: Sequelize.TEXT("long"),
+            allowNull: false
+        }
+    })
+    return Prompt
+}

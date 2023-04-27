@@ -10,13 +10,13 @@ useEffect(()=>{
 },[]);
 
 const getPrompts = async()=>{
-    const response = await axios.get('http://localhost:5000/prompts');
+    const response = await axios.get('http://localhost:5000/api/prompts');
     setPrompt(response.data);
 };
 
-const deletePrompt = async(id)=> {
+const deletePrompt = async(Id)=> {
     try {
-        await axios.delete('http://localhost:5000/prompts/'+id);
+        await axios.delete('http://localhost:5000/api/prompts/'+Id);
         getPrompts();
     } catch (error) {
         console.log(error)
@@ -39,13 +39,13 @@ const deletePrompt = async(id)=> {
                 </thead>
                 <tbody>
                     {prompts.map((prompt, index) =>(
-                        <tr key={prompt.id}>
+                        <tr key={prompt.Id}>
                             <td>{index+1}</td>
-                            <td>{prompt.question}</td>
-                            <td>{prompt.answer}</td>
+                            <td>{prompt.Question}</td>
+                            <td>{prompt.Answer}</td>
                             <td>
-                                <Link to={'edit/'+prompt.id} className='button is-small'>Edit</Link>
-                                <button onClick={()=> deletePrompt(prompt.id)} className='button is-small'>Delete</button>
+                                <Link to={'edit/'+prompt.Id} className='button is-small'>Edit</Link>
+                                <button onClick={()=> deletePrompt(prompt.Id)} className='button is-small'>Delete</button>
                             </td>
                         </tr>
                     ))}

@@ -1,27 +1,26 @@
-GET http://localhost:5000/prompts
+GET http://localhost:5000/api/prompts
 
 ###
 
-GET http://localhost:5000/prompts/5
+GET http://localhost:5000/api/prompts/1
 
 ###
-POST  http://localhost:5000/prompts
+POST  http://localhost:5000/api/prompts
 Content-Type: application/json
 
 {
-    "question": "Apa ibukota Thailand?",
-    "answer":"Bangkok"
+    "Question": "Apa ibukota Indonesia2?",
+    "Answer":"Jakarta"
 }
 
 ###
-
-PATCH  http://localhost:5000/prompts/1
+PATCH   http://localhost:5000/api/prompts/1
 Content-Type: application/json
 
 {
-    "question": "Apa ibukota Malaysia?",
-    "answer":"Kuala Lumpur"
+    "Question": "Apa ibukota Indonesia?",
+    "Answer":"Jakarta"
 }
 
 ###
-DELETE   http://localhost:5000/prompts/4
+DELETE   http://localhost:5000/api/prompts/1

@@ -3,21 +3,22 @@ import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom';
 
 const EditPrompt = () => {
-    const [question, setQuestion] = useState("");
-    const [answer, setAnswer] = useState("");
+    const [Question, setQuestion] = useState("");
+    const [Answer, setAnswer] = useState("");
     const navigate = useNavigate();
-    const {id} = useParams();
+    const { Id } = useParams();
 
     useEffect(()=>{
         getPromptById();}
     ,[])
 
     const updatePrompt = async (e) =>{
+        console.log("hereis"+Id)
         e.preventDefault();
         try {
-            await axios.patch('http://localhost:5000/prompts/'+id,{
-                question,
-                answer
+            await axios.patch('http://localhost:5000/api/prompts/'+Id,{
+                Question: Question,
+                Answer: Answer
             });
             navigate("/");
         } catch (error) {
@@ -26,9 +27,9 @@ const EditPrompt = () => {
     };
 
   const getPromptById = async () =>{
-    const response = await axios.get(`http://localhost:5000/prompts/`+id);
-    setQuestion(response.data.question)
-    setAnswer(response.data.answer)
+    const response = await axios.get(`http://localhost:5000/api/prompts/`+Id);
+    setQuestion(response.data.Question)
+    setAnswer(response.data.Answer)
   }
 
   return (
@@ -41,7 +42,7 @@ const EditPrompt = () => {
                         <input 
                         type="text" 
                         className="input" 
-                        value={question} 
+                        value={Question} 
                         onChange={(e)=> setQuestion(e.target.value)}
                         placeholder='Question'/>
                     </div>
@@ -52,7 +53,7 @@ const EditPrompt = () => {
                         <input 
                         type="text" 
                         className="input" 
-                        value={answer} 
+                        value={Answer} 
                         onChange={(e)=> setAnswer(e.target.value)}
                         placeholder='Answer'/>
                     </div>

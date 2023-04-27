@@ -1,58 +1,130 @@
-import Prompt from "../models/PromptModel.js";
+// SETUP FILE
+const { where } = require("sequelize");
+const db = require("../models");
+const Prompt = db.prompts;
 
-export const getPrompts = async(req, res)=>{
-    try{
-        const response = await Prompt.findAll();
-        res.status(200).json(response);
-    } catch (error){
-        console.log(error.message);
-    }
-}
+exports.create = (req,res) => {
+    const {Question, Answer} = req.body;
 
-export const getPromptById = async(req, res)=>{
-    try{
-        const response = await Prompt.findOne({
-            where:{
-                id: req.params.id
-            }
-    });
-        res.status(200).json(response);
-    } catch (error){
-        console.log(error.message);
-    }
-}
+    if (Question && Answer){
+        const prompt = {
+            Question: Question,
+            Answer: Answer
+        };
 
-export const createPrompt = async(req, res)=>{
-    try{
-        await Prompt.create(req.body);
-        res.status(201).json({msg:"Prompt Created"});
-    } catch (error){
-        console.log(error.message);
-    }
-}
-
-export const updatePrompt = async(req, res)=>{
-    try{
-        await Prompt.update(req.body,{
-            where:{
-                id: req.params.id
-            }
+        Prompt.create(prompt)
+            .then((data)=>{
+                res.status(201).send(data);
+            })
+            .catch((error)=>{
+                res.status(500).send({
+                    message: error.message || "Internal Server Error"
+                });
+            });
+    } else {
+        res.status(400).send({
+          message: "Bad Request",
         });
-        res.status(200).json({msg:"Prompt updated"});
-    } catch (error){
-        console.log(error.message);
     }
 }
 
-export const deletePrompt = async(req, res)=>{
-    try{
-        await Prompt.destroy({
-            where:{
-                id: req.params.id
+exports.findOne = (req,res) => {
+    const {Id} = req.params;
+
+    Prompt.findByPk(Id)
+        .then((data)=> {
+            if(data){
+                res.status(200).send(data);
+            } else {
+                res.status(404).send({
+                    message:"Not Found"
+                });
             }
+        })
+        .catch((error)=>{
+            res.status(500).send({
+                message: error.message || "Internal Server Error"
+            })
+        })
+}
+
+exports.findAll = (req,res) => {
+    const {Question} = req.query;
+    const condition = Question ? {Question:Question}:null
+
+    Prompt.findAll({
+        where: condition,
+    })
+        .then((data)=> {
+            res.status(200).send(data);
+        })
+        .catch((error)=>{
+            res.status(500).send({
+                message: error.message || "Internal Server Error"
+            })
+        })
+}
+
+exports.update = (req,res) => {
+    const {Question, Answer} = req.body;
+
+    if (Question && Answer){
+        const prompt = {
+            Question: Question,
+            Answer: Answer
+        };
+
+        Prompt.update(prompt,{
+            where:{Id: req.params.Id},
+        })
+            .then((nums)=>{
+                res.status(201).send(nums);
+            })
+            .catch((error)=>{
+                res.status(500).send({
+                    message: error.message || "Internal Server Error"
+                });
+            });
+    } else {
+        res.status(400).send({
+          message: "Bad Request",
         });
-        res.status(200).json({msg:"Prompt deleted"});
-    } catch (error){
-        console.log(error.message);
     }
+}
+
+exports.delete = (req,res) => {
+    //const {Id} = req.params.Id;
+
+    Prompt.destroy({
+        where: {Id: req.params.Id},
+    })
+        .then((nums)=> {
+            if(nums){
+                res.sendStatus(200).send(nums);
+            } else {
+                res.status(404).send({
+                    message:"Bad Request"
+                });
+            }
+        })
+        .catch((error)=>{
+            res.status(500).send({
+                message: error.message || "Internal Server Error"
+            })
+        })
+}
+
+exports.deleteAll = (req,res) => {
+    Prompt.destroy({
+        where: {},
+        truncate: false
+    })
+        .then((nums)=> {
+            res.status(200).send(nums);
+        })
+        .catch((error)=>{
+            res.status(500).send({
+                message: error.message || "Internal Server Error"
+            })
+        })
 }

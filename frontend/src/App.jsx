@@ -9,7 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<PromptList/>}/>
         <Route path="add" element={<AddPrompt/>}/>
-        <Route path="edit/:id" element={<EditPrompt/>}/>
+        <Route path="edit/:Id" element={<EditPrompt/>}/>
       </Routes>
     </BrowserRouter>
   )
