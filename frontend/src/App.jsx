@@ -1,11 +1,14 @@
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import PromptList from "./components/PromptList"
-import AddPrompt from "./components/AddPrompt";
-import EditPrompt from "./components/EditPrompt";
+import PromptList from "./pages/PromptList"
+import AddPrompt from "./pages/AddPrompt";
+import EditPrompt from "./pages/EditPrompt";
+import NavBar from "./components/NavBar";
+
 
 function App() {
   return (
     <BrowserRouter>
+      <NavBar/>
       <Routes>
         <Route path="/" element={<PromptList/>}/>
         <Route path="add" element={<AddPrompt/>}/>
