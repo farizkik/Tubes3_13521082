@@ -31,8 +31,8 @@ Content-Type: application/json
 
 {
     "ChatId" : 2,
-    "BubbleId" : 2,
-    "Text": "Halo2",
+    "BubbleId" : 1,
+    "Text": "Halo3",
     "Sender":"user"
 }
 

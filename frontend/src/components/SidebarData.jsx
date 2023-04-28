@@ -3,7 +3,7 @@ import React from 'react'
 export const SidebarData =[
     {
         title: 'Database',
-        path: '/',
+        path: 'database',
         cName: 'nav-text'
     },
     {
@@ -13,7 +13,7 @@ export const SidebarData =[
     },
     {
         title: 'Convo1',
-        path: 'convo',
+        path: 'convo/1',
         cName: 'nav-text'
     }
 

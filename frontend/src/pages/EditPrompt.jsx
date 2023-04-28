@@ -13,7 +13,6 @@ const EditPrompt = () => {
     ,[])
 
     const updatePrompt = async (e) =>{
-        console.log("hereis"+Id)
         e.preventDefault();
         try {
             await axios.patch('http://localhost:5000/api/prompts/'+Id,{

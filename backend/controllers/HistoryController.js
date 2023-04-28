@@ -70,7 +70,7 @@ exports.findAll = (req,res) => {
     const condition = Text ? {Text:Text}:null
 
     History.findAll({
-        where: condition,
+        where: {BubbleId:1},
     })
         .then((data)=> {
             res.status(200).send(data);
