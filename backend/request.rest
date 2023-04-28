@@ -12,6 +12,14 @@ Content-Type: application/json
     "Question": "Apa ibukota Indonesia2?",
     "Answer":"Jakarta"
 }
+###
+GET  http://localhost:5000/api/prompts
+Content-Type: application/json
+
+{
+    "Question": "Apa ibukota Indonesia2?",
+    "Answer":"Jakarta"
+}
 
 ###
 PATCH   http://localhost:5000/api/prompts/1

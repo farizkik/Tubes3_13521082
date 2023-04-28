@@ -57,14 +57,24 @@ const Home = () => {
                     setAvailable(getAvail(response))
                 }
 
-                console.log(Available);
                 await axios.post('http://localhost:5000/api/histories',{
                     ChatId: Available,
                     BubbleId: Bubble,
                     Text: Text,
                     Sender: "user"
                 });
+
+                const response = await axios.get('http://localhost:5000/api/prompts/'+Available+'/'+Bubble);
+                console.log(response)
+
+                await axios.post('http://localhost:5000/api/histories',{
+                    ChatId: Available,
+                    BubbleId: Bubble+1,
+                    Text: response.data,
+                    Sender: "ai"
+                });
                 getChats()
+
             } catch (error) {
                 console.log(error);
             }

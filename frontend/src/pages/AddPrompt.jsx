@@ -14,7 +14,7 @@ const AddPrompt = () => {
                 Question: Question,
                 Answer: Answer
             });
-            navigate("/");
+            navigate("/database");
         } catch (error) {
             console.log(error);
         }

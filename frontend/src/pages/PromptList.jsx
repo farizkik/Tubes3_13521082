@@ -26,7 +26,7 @@ const deletePrompt = async(Id)=> {
   return (
     <div className="columns mt-5 is-centered">
         <div className="column is-half">
-            <Link to={'add'} className="button is-success">Add New</Link>
+            <Link to={'/add'} className="button is-success">Add New</Link>
 
             <tabel className="table is-striped is-fullwidth">
                 <thead>

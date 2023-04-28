@@ -2,6 +2,7 @@
 const { where } = require("sequelize");
 const db = require("../models");
 const Prompt = db.prompts;
+const History = db.histories;
 
 exports.create = (req,res) => {
     const {Question, Answer} = req.body;
@@ -29,12 +30,17 @@ exports.create = (req,res) => {
 }
 
 exports.findOne = (req,res) => {
-    const {Id} = req.params;
+    const {ChatId,BubbleId} = req.params;
 
-    Prompt.findByPk(Id)
+    History.findAll({
+        where:{
+            ChatId: ChatId,
+            BubbleId:BubbleId
+        }
+    })
         .then((data)=> {
             if(data){
-                res.status(200).send(data);
+                res.status(200).send("Pertanyaan " + data[0].Text + " tidak dikenali.");
             } else {
                 res.status(404).send({
                     message:"Not Found"

@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route path="database" element={<PromptList/>}/>
         <Route path="/" element={<Home/>}/>
-        <Route path="add" element={<AddPrompt/>}/>
+        <Route path="database/add" element={<AddPrompt/>}/>
         <Route path="edit/:Id" element={<EditPrompt/>}/>
         <Route path="convo/:ChatId" element={<ChatContent/>}/>
       </Routes>
