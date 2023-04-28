@@ -31,15 +31,15 @@ function NavBar() {
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
             <ul className="nav-menu-items">
                 <li className="navbar-toggle">
-                    <Link to='#' className='menu-bars mt-5'>
+                    <Link to='#' className='menu-bars mt-1'>
                         <BsIcon.BsArrowsAngleContract onClick={showSidebar}/>
                     </Link>
                 </li>
-                <button className="nav-menu-items">
+                <Link to="/" className="nav-menu-items">
                     <span className="nav-text">
                     New conversation
                     </span>
-                </button>
+                </Link>
                 {SidebarData.map((item,index) => {
                     return(
                         <li key={index} className={item.cName}>
