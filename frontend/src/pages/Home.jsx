@@ -65,7 +65,6 @@ const Home = () => {
                 });
 
                 const response = await axios.get('http://localhost:5000/api/prompts/'+Available+'/'+Bubble);
-                console.log(response)
 
                 await axios.post('http://localhost:5000/api/histories',{
                     ChatId: Available,

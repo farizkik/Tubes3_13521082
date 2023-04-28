@@ -40,6 +40,16 @@ const ChatContent = () => {
                     Text: Text,
                     Sender: "user"
                 });
+
+                const response = await axios.get('http://localhost:5000/api/prompts/'+ChatId+'/'+Bubble);
+
+                await axios.post('http://localhost:5000/api/histories',{
+                    ChatId: ChatId,
+                    BubbleId: Bubble+1,
+                    Text: response.data,
+                    Sender: "ai"
+                });
+
                 getChats()
             } catch (error) {
                 console.log(error);
