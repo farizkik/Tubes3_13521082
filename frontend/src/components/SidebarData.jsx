@@ -8,7 +8,7 @@ export const SidebarData =[
     },
     {
         title: 'Add',
-        path: 'add',
+        path: 'database/add',
         cName: 'nav-text'
     },
     {

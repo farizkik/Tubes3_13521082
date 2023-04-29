@@ -1,6 +1,7 @@
 import React,{useState, useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom';
+import './Home.css'
 
 const ChatContent = () => {
     const [Text, setText] = useState("");
@@ -61,30 +62,11 @@ const ChatContent = () => {
         <div className="center">
         <div className="columns mt-5 is-centered">
             <div className="column is-half">
-                <tabel className="table is-striped is-fullwidth">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>BubbleId</th>
-                            <th>Text</th>
-                            <th>User</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {chats.map((chat, index) =>(
-                            <tr key={chat.BubbleId}>
-                                <td>{index+1}</td>
-                                <td>{chat.BubbleId}</td>
-                                <td>{chat.Text}</td>
-                                <td>{chat.Sender}</td>
-                            </tr>
-                        ))}
-                        
-                    </tbody>
-                </tabel>
-            </div>
-
-            
+                {chats.map((chat, index) =>(
+                    <div className={chat.Sender}> {chat.Text} </div>
+                    
+                ))}
+        </div>       
         </div>
 
         <div className="columns mt-5 is-centered ">

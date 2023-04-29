@@ -1,10 +1,12 @@
 import React,{useState, useEffect} from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom';
+import './Home.css'
+import NavBar from '../components/NavBar';
 
 const Home = () => {
     const [Text, setText] = useState("");
-    const [Available, setAvailable] = useState("");
+    const [ChatId, setAvailable] = useState("");
     const [Bubble, setBubble] = useState(1);
 
     const navigate = useNavigate();
@@ -33,7 +35,7 @@ const Home = () => {
     }
 
     const startAvail = async()=>{
-        if(Available=="")
+        if(ChatId=="")
             {
                 const response = await axios.get('http://localhost:5000/api/histories/');
                 setAvailable(getAvail(response))
@@ -41,8 +43,8 @@ const Home = () => {
     }
 
     const getChats = async()=>{
-        if(Available!=""){
-            const response = await axios.get('http://localhost:5000/api/histories/'+Available);
+        if(ChatId!=""){
+            const response = await axios.get('http://localhost:5000/api/histories/'+ChatId);
             setChat(response.data);
             setBubble(response.data.length+1)
         }
@@ -51,23 +53,23 @@ const Home = () => {
         if(Text !=""){
             e.preventDefault();
             try {
-                if(Available=="")
+                if(ChatId=="")
                 {
                     const response = await axios.get('http://localhost:5000/api/histories/');
                     setAvailable(getAvail(response))
                 }
 
                 await axios.post('http://localhost:5000/api/histories',{
-                    ChatId: Available,
+                    ChatId: ChatId,
                     BubbleId: Bubble,
                     Text: Text,
                     Sender: "user"
                 });
 
-                const response = await axios.get('http://localhost:5000/api/prompts/'+Available+'/'+Bubble);
+                const response = await axios.get('http://localhost:5000/api/prompts/'+ChatId+'/'+Bubble);
 
                 await axios.post('http://localhost:5000/api/histories',{
-                    ChatId: Available,
+                    ChatId: ChatId,
                     BubbleId: Bubble+1,
                     Text: response.data,
                     Sender: "ai"
@@ -84,30 +86,12 @@ const Home = () => {
         <div className="center">
         <div className="columns mt-5 is-centered">
             <div className="column is-half">
-                <tabel className="table is-striped is-fullwidth">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>BubbleId</th>
-                            <th>Text</th>
-                            <th>User</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {chats.map((chat, index) =>(
-                            <tr key={chat.BubbleId}>
-                                <td>{index+1}</td>
-                                <td>{chat.BubbleId}</td>
-                                <td>{chat.Text}</td>
-                                <td>{chat.Sender}</td>
-                            </tr>
-                        ))}
-                        
-                    </tbody>
-                </tabel>
+                {chats.map((chat, index) =>(
+                    <div className={chat.Sender}> {chat.Text} </div>
+                    
+                ))}
             </div>
 
-            
         </div>
 
         <div className="columns mt-5 is-centered ">
