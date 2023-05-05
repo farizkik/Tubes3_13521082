@@ -38,15 +38,15 @@ POST  http://localhost:5000/api/histories
 Content-Type: application/json
 
 {
-    "ChatId" : 2,
-    "BubbleId" : 1,
-    "Text": "Halo3",
+    "ChatId" : 1,
+    "BubbleId" : 5,
+    "Text": "(5^2) + 28",
     "Sender":"user"
 }
 
 ###
 
-GET http://localhost:5000/api/histories
+GET http://localhost:5000/api/prompts/1/5
 
 ###
 

@@ -3,6 +3,7 @@ const { where } = require("sequelize");
 const db = require("../models");
 const Prompt = db.prompts;
 const History = db.histories;
+const evaluateExpression = require("./arit")
 
 exports.create = (req,res) => {
     const {Question, Answer} = req.body;
@@ -40,7 +41,14 @@ exports.findOne = (req,res) => {
     })
         .then((data)=> {
             if(data){
-                res.status(200).send("Pertanyaan " + data[0].Text + " tidak dikenali.");
+                try{
+                    var b = evaluateExpression(data[0].Text)
+                    res.status(200).send(b.toString());
+                }
+                catch(error){
+                    res.status(200).send("Pertanyaan " + data[0].Text + " tidak dikenali.");
+                }
+                
             } else {
                 res.status(404).send({
                     message:"Not Found"
