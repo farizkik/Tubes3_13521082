@@ -1,3 +1,9 @@
+const { KnuthMorrisPratt, BoyerMoore, LevenstheinDistance } = require("./StringFunctions");
+
+// const KnuthMorrisPratt		= require("./StringFunctions");
+// const BoyerMoore			= require("./StringFunctions");
+// const LevenstheinDistance	= require("./StringFunctions");
+
 // SETUP FILE
 const { where } = require("sequelize");
 const db = require("../models");
@@ -32,6 +38,7 @@ exports.create = (req,res) => {
 
 exports.findOne = (req,res) => {
     const {ChatId,BubbleId} = req.params;
+	let text = "";
 
     History.findAll({
         where:{
@@ -40,16 +47,9 @@ exports.findOne = (req,res) => {
         }
     })
         .then((data)=> {
-            if(data){
-                try{
-                    var b = evaluateExpression(data[0].Text)
-                    res.status(200).send(b.toString());
-                }
-                catch(error){
-                    res.status(200).send("Pertanyaan " + data[0].Text + " tidak dikenali.");
-                }
-                
-            } else {
+			text = data[0].Text;
+
+            if(!data){
                 res.status(404).send({
                     message:"Not Found"
                 });
@@ -60,6 +60,58 @@ exports.findOne = (req,res) => {
                 message: error.message || "Internal Server Error"
             })
         })
+
+	Prompt.findAll({
+		where: null,
+	})
+		.then((data) => {
+			if (data.length !== 0)
+			{
+				// Cek KMP
+				const algorithm = new KnuthMorrisPratt(text, data);
+
+				let value = algorithm.searchPattern();
+
+				if (value != null)
+				{
+					res.status(200).send(value);
+				}
+				else
+				{
+					// Cek levensthein
+					const levensthein = new LevenstheinDistance(text, data);
+
+					let reply = levensthein.initializeLevensthein();
+
+					if (reply.length == 1)
+					{
+						res.status(200).send(reply);
+					}
+					else
+					{
+						let string = "Pertanyaan tidak ditemukan pada database.\nApakah maksud anda\n";
+						string += reply[0] + '\n';
+						string += reply[1] + '\n';
+						string += reply[2] + '\n';
+
+						console.log(string);
+
+						res.status(200).send(string);
+					}
+				}
+			}
+			else
+			{
+				 res.status(404).send({
+					message: "Not Found"
+				});
+			}
+		})
+		.catch((error) => {
+			res.status(500).send({
+				message : error.message || "Internal Server Error"
+			})
+		})
 }
 
 exports.findAll = (req,res) => {
