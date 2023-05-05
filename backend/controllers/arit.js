@@ -1,5 +1,5 @@
 
-const {Stack} = require("@datastructures-js/stack")
+
 
 const PRECEDENCE = {
   "+": 2,

@@ -94,7 +94,7 @@ const Home = () => {
                     Text: Text,
                     Sender: "user"
                 });
-
+                
                 const response = await axios.get('http://localhost:5000/api/prompts/'+ChatId+'/'+Bubble);
 
                 await axios.post('http://localhost:5000/api/histories',{
@@ -103,6 +103,7 @@ const Home = () => {
                     Text: response.data,
                     Sender: "ai"
                 });
+                console.log("heeree")
                 getChats()
                 setText("")
             } catch (error) {
@@ -163,7 +164,6 @@ const Home = () => {
             onChange={getText}
             onKeyDown = {keyDown}
             placeholder='Chat here'
-            defaultValue={""}
             value={Text}
             />
             <div className="field">

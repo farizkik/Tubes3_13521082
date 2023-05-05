@@ -1,5 +1,7 @@
-import { evaluateExpression } from "./arithmetic";
-
+const evaluateExpression = require("./ArithmeticEvaluator")
+const db = require("../models");
+const Prompt = db.prompts;
+const History = db.histories;
 
 // REGEX for tambah pertanyaan
 const tambahPertanyaan = /Tambah(kan|in)? pertanyaan .* dengan jawaban .*( dong SMMCSBD)?/i
@@ -26,7 +28,7 @@ const kalkulator = /([0-9]|\+|\-|\*|\/|\^|\(|\)| )*/
  * @param {string} exp 
  * @returns 
  */
-export function respondMessage(exp) {
+function respondMessage(exp) {
     if(tambahPertanyaan.test(exp)) {
         // parse & masukkan pertanyaan & jawaban ke db
         let filteredExp = filterQuery(exp, [tambahPertanyaanPrefix, tambahPertanyaanPostfix]);
@@ -48,6 +50,60 @@ export function respondMessage(exp) {
     }
     else if(kalkulator.test(exp)) {
         return "Hasil dari ekspresi adalah " + evaluateExpression(exp);
+    }
+    else{
+        Prompt.findAll({
+            where: null,
+        })
+            .then((data) => {
+                if (true)
+                {
+                    // Cek KMP
+                    const algorithm = new KnuthMorrisPratt(text, data);
+    
+                    let value = algorithm.searchPattern();
+    
+                    if (value != null)
+                    {
+                        res.status(200).send(value);
+                    }
+                    else
+                    {
+                        // Cek levensthein
+                        const levensthein = new LevenstheinDistance(text, data);
+    
+                        let reply = levensthein.initializeLevensthein();
+    
+                        if (reply.length == 1)
+                        {
+                            res.status(200).send(reply);
+                        }
+                        else
+                        {
+                            let string = "Pertanyaan tidak ditemukan pada database.\nApakah maksud anda\n";
+                            string += reply[0] + '\n';
+                            string += reply[1] + '\n';
+                            string += reply[2] + '\n';
+    
+                            console.log(string);
+    
+                            res.status(200).send(string);
+                        }
+                    }
+                    
+                }
+                else
+                {
+                     res.status(404).send({
+                        message: "Not Found"
+                    });
+                }
+            })
+            .catch((error) => {
+                res.status(500).send({
+                    message : error.message || "Internal Server Error"
+                })
+            })
     }
     return null;
 }
@@ -145,3 +201,5 @@ class InvalidDateError extends Error {
         super("Tanggal tidak valid!");
     }
 }
+
+module.exports = respondMessage

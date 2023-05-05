@@ -1,4 +1,4 @@
-import { Stack } from "datastructures-js"
+const {Stack} = require("@datastructures-js/stack")
 
 const PRECEDENCE = {
   "+": 2,
@@ -31,7 +31,7 @@ const RIGHTPARENTHESIS = ")"
  * @param exp expression to be evaluated in string form
  * @returns number the expression evaluates to
  */
-export function evaluateExpression(exp) {
+function evaluateExpression(exp) {
   // Uses modified Shunting Yard Algorithm. Source: https://en.wikipedia.org/wiki/Shunting_yard_algorithm
   let tokens = parseInfixExpression(exp)
   let valueStack = new Stack()
@@ -234,3 +234,5 @@ class DivisionByZeroError extends Error {
     super("Expression contains division by zero")
   }
 }
+
+module.exports = evaluateExpression

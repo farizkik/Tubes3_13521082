@@ -10,6 +10,7 @@ const db = require("../models");
 const Prompt = db.prompts;
 const History = db.histories;
 const evaluateExpression = require("./arit")
+const respondMessage = require("./ChatRegex")
 
 exports.create = (req,res) => {
     const {Question, Answer} = req.body;
@@ -48,7 +49,13 @@ exports.findOne = (req,res) => {
     })
         .then((data)=> {
 			text = data[0].Text;
-
+            try{
+            let response = respondMessage(text)
+            res.status(200).send(response)
+            }
+            catch(error){
+                res.status(200).send(error.message);
+            }
             if(!data){
                 res.status(404).send({
                     message:"Not Found"
@@ -60,58 +67,6 @@ exports.findOne = (req,res) => {
                 message: error.message || "Internal Server Error"
             })
         })
-
-	Prompt.findAll({
-		where: null,
-	})
-		.then((data) => {
-			if (data.length !== 0)
-			{
-				// Cek KMP
-				const algorithm = new KnuthMorrisPratt(text, data);
-
-				let value = algorithm.searchPattern();
-
-				if (value != null)
-				{
-					res.status(200).send(value);
-				}
-				else
-				{
-					// Cek levensthein
-					const levensthein = new LevenstheinDistance(text, data);
-
-					let reply = levensthein.initializeLevensthein();
-
-					if (reply.length == 1)
-					{
-						res.status(200).send(reply);
-					}
-					else
-					{
-						let string = "Pertanyaan tidak ditemukan pada database.\nApakah maksud anda\n";
-						string += reply[0] + '\n';
-						string += reply[1] + '\n';
-						string += reply[2] + '\n';
-
-						console.log(string);
-
-						res.status(200).send(string);
-					}
-				}
-			}
-			else
-			{
-				 res.status(404).send({
-					message: "Not Found"
-				});
-			}
-		})
-		.catch((error) => {
-			res.status(500).send({
-				message : error.message || "Internal Server Error"
-			})
-		})
 }
 
 exports.findAll = (req,res) => {
