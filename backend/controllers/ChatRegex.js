@@ -23,7 +23,8 @@ const tanyaTanggal2 = /([0-2]?[0-9]|3[0-1])\/(0?[0-9]|1[0-2])\/[0-9]{1,4}( Hari 
 const tanyaTanggalQuery = / *Hari apa(kah)?\?? */i
 
 // REGEX for calculator
-const kalkulator = /([0-9]|\+|\-|\*|\/|\^|\(|\)| )*/
+const kalkulator1 = /(\d|\+|\-|\*|\/|\^|\(|\)|\s)+/
+const kalkulator2 = /[a-z]+/i
 
 /**
  * get the basic response of the bot based on the specified RegEx(es)
@@ -115,7 +116,7 @@ function respondMessage(exp) {
         let filteredExp = filterQuery(exp, [tanyaTanggalQuery]);
         return "Tanggal " + filteredExp + " jatuh pada hari " + getDayZeller(filteredExp);
     }
-    else if(kalkulator.test(exp)) {
+    else if(kalkulator1.test(exp) && !kalkulator2.test(exp)) {
         return "Hasil dari ekspresi adalah " + evaluateExpression(exp);
     }
     else{
