@@ -22,7 +22,7 @@ const tanyaTanggalQuery = / *Hari apa(kah)?\?? */i
 
 // REGEX for calculator
 const kalkulator1 = /(\d|\+|\-|\*|\/|\^|\(|\)|\s)+/
-const kalkulator2 = /[\w]+/
+const kalkulator2 = /[a-z]+/i
 
 /**
  * get the basic response of the bot based on the specified RegEx(es)
