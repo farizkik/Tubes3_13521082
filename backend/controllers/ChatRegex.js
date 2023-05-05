@@ -2,6 +2,8 @@ const evaluateExpression = require("./ArithmeticEvaluator")
 const db = require("../models");
 const Prompt = db.prompts;
 const History = db.histories;
+const { KnuthMorrisPratt, BoyerMoore, LevenstheinDistance } = require("./StringFunctions");
+const { where } = require("sequelize");
 
 // REGEX for tambah pertanyaan
 const tambahPertanyaan = /Tambah(kan|in)? pertanyaan .* dengan jawaban .*( dong SMMCSBD)?/i
@@ -33,16 +35,81 @@ function respondMessage(exp) {
         // parse & masukkan pertanyaan & jawaban ke db
         let filteredExp = filterQuery(exp, [tambahPertanyaanPrefix, tambahPertanyaanPostfix]);
         let query = filteredExp.split(tambahPertanyaanInfix);
+        let isNew = true;
+        const prompt = {
+            Question: query[0],
+            Answer: query[1]
+        };
         // insert to db: query[0] -> pertanyaan & query[1] -> jawaban
-        // REMINDER: kalau pertanyaan sudah ada di query, jawaban baru update jawaban lama
-        return query[0] + " telah ditambahkan ke dalam daftar pertanyaan dengan jawaban " + query[1];
+        Prompt.findAll({
+            where: null,
+        })
+            .then((data) => {
+                    // Cek KMP
+                    
+                    const algorithm = new KnuthMorrisPratt(query[0], data);
+    
+                    let value = algorithm.searchPattern();
+                    console.log("inidia")
+                    console.log
+                    if (value != null)
+                    {
+                        isNew =false;
+                    }
+
+            })
+            .catch((error) => {
+                return "Internal Server Error occured."
+            })
+
+        // Kalau pertanyaan sudah ada di query, jawaban baru update jawaban lama
+        if(isNew){
+            Prompt.create(prompt)
+                .catch((error)=>{
+                    return "Terdapat kesalahan saat penambahan pertanyaan"
+                });
+            return query[0] + " telah ditambahkan ke dalam daftar pertanyaan dengan jawaban " + query[1];
+        }
+        Prompt.update(prompt,{
+            where:{Id: req.params.Id},
+        })
+            .catch((error)=>{
+                return "Terdapat kesalahan saat penambahan pertanyaan"
+        });
+        return "Pertaanyaan "+query[0] + " sudah ada! Jawaban diupdate menjadi " + query[1];
     }
     else if(hapusPertanyaan.test(exp)) {
         // parse & hapus pertanyaan dari db
         let filteredExp = filterQuery(exp, [hapusPertanyaanPrefix, hapusPertanyaanPostfix]);
+        
         // delete from db: filteredExp -> pertanyaan
-        return filteredExp + " telah dihapus dari daftar pertanyaan";
+        let isThere = true;
+        
+        Prompt.findAll({
+            where: null,
+        })
+            .then((data) => {
+                    // Cek KMP
+                    const algorithm = new KnuthMorrisPratt(filteredExp, data);
+    
+                    let value = algorithm.searchPattern();
+    
+                    if (value == null)
+                    {
+                        isThere =false;
+                    }
+            })
+            .catch((error) => {
+                return "Internal Server Error occured."
+            })
+        if(isThere){
+
+            return filteredExp + " telah dihapus dari daftar pertanyaan";
+        }
+        return "Tidak ada pertanyaan " + filteredExp +" pada database!";
+        
     }
+
     else if(tanyaTanggal1.test(exp)
         || tanyaTanggal2.test(exp)) {
         let filteredExp = filterQuery(exp, [tanyaTanggalQuery]);
@@ -56,8 +123,6 @@ function respondMessage(exp) {
             where: null,
         })
             .then((data) => {
-                if (true)
-                {
                     // Cek KMP
                     const algorithm = new KnuthMorrisPratt(text, data);
     
@@ -65,7 +130,7 @@ function respondMessage(exp) {
     
                     if (value != null)
                     {
-                        res.status(200).send(value);
+                        return value;
                     }
                     else
                     {
@@ -76,7 +141,7 @@ function respondMessage(exp) {
     
                         if (reply.length == 1)
                         {
-                            res.status(200).send(reply);
+                            return reply;
                         }
                         else
                         {
@@ -85,24 +150,13 @@ function respondMessage(exp) {
                             string += reply[1] + '\n';
                             string += reply[2] + '\n';
     
-                            console.log(string);
-    
-                            res.status(200).send(string);
+                            return string;
                         }
                     }
-                    
-                }
-                else
-                {
-                     res.status(404).send({
-                        message: "Not Found"
-                    });
-                }
+
             })
             .catch((error) => {
-                res.status(500).send({
-                    message : error.message || "Internal Server Error"
-                })
+                return "Internal Server Error occured."
             })
     }
     return null;
