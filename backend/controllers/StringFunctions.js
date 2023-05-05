@@ -10,8 +10,6 @@ class KnuthMorrisPratt
 	{
 		this.pattern	= inputString;
 		this.texts		= database;
-
-		console.log(this.texts);
 	}
 
 	/**
@@ -261,3 +259,7 @@ class LevenstheinDistance
 		console.log(1 - (this.distance / denom));
 	}
 };
+
+module.exports = KnuthMorrisPratt;
+module.exports = BoyerMoore;
+module.exports = LevenstheinDistance;
