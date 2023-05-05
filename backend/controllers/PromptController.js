@@ -40,6 +40,7 @@ exports.create = (req,res) => {
 exports.findOne = (req,res) => {
     const {ChatId,BubbleId} = req.params;
 	let text = "";
+    let retval=true;
 
     History.findAll({
         where:{
@@ -51,8 +52,11 @@ exports.findOne = (req,res) => {
 			text = data[0].Text;
             try{
             let response = respondMessage(text)
-            res.status(200).send(response)
+            if(response!=null)
+                res.status(200).send(response)
+            else retval=false;
             }
+            
             catch(error){
                 res.status(200).send(error.message);
             }
@@ -61,14 +65,69 @@ exports.findOne = (req,res) => {
                     message:"Not Found"
                 });
             }
+            if(!retval){
+
+                Prompt.findAll({
+                    where: null,
+                })
+                .then((data) => {
+                    if (data.length !== 0)
+                    {
+                        // Cek KMP
+                        const algorithm = new KnuthMorrisPratt(text, data);
+                        
+                        let value = algorithm.searchPattern();
+        
+                        if (value != null)
+                        {
+                            res.status(200).send(value);
+                        }
+                        else
+                        {
+                            // Cek levensthein
+                            const levensthein = new LevenstheinDistance(text, data);
+                            
+                            let reply = levensthein.initializeLevensthein();
+                            
+                            if (reply.length == 1)
+                            {
+                                res.status(200).send(reply);
+                            }
+                            else
+                            {
+                                let string = "Pertanyaan tidak ditemukan pada database.\nApakah maksud anda\n";
+                                string += reply[0] + '\n';
+                                string += reply[1] + '\n';
+                                string += reply[2] + '\n';
+                                
+                                console.log(string);
+                                
+                                res.status(200).send(string);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        res.status(404).send({
+                            message: "Not Found"
+                        });
+                    }
+                })
+                .catch((error) => {
+                    res.status(500).send({
+                        message : error.message || "Internal Server Error"
+                    })
+                })
+            }
         })
         .catch((error)=>{
             res.status(500).send({
                 message: error.message || "Internal Server Error"
             })
         })
-}
-
+        
+        }
+        
 exports.findAll = (req,res) => {
     const {Question} = req.query;
     const condition = Question ? {Question:Question}:null

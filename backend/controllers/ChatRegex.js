@@ -120,45 +120,7 @@ function respondMessage(exp) {
         return "Hasil dari ekspresi adalah " + evaluateExpression(exp);
     }
     else{
-        Prompt.findAll({
-            where: null,
-        })
-            .then((data) => {
-                    // Cek KMP
-                    const algorithm = new KnuthMorrisPratt(text, data);
-    
-                    let value = algorithm.searchPattern();
-    
-                    if (value != null)
-                    {
-                        return value;
-                    }
-                    else
-                    {
-                        // Cek levensthein
-                        const levensthein = new LevenstheinDistance(text, data);
-    
-                        let reply = levensthein.initializeLevensthein();
-    
-                        if (reply.length == 1)
-                        {
-                            return reply;
-                        }
-                        else
-                        {
-                            let string = "Pertanyaan tidak ditemukan pada database.\nApakah maksud anda\n";
-                            string += reply[0] + '\n';
-                            string += reply[1] + '\n';
-                            string += reply[2] + '\n';
-    
-                            return string;
-                        }
-                    }
-
-            })
-            .catch((error) => {
-                return "Internal Server Error occured."
-            })
+        return null
     }
     return null;
 }
