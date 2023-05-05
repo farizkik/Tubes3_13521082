@@ -38,7 +38,7 @@ exports.create = (req,res) => {
 }
 
 exports.findOne = (req,res) => {
-    const {ChatId,BubbleId} = req.params;
+    const {ChatId,BubbleId,Selector} = req.params;
 	let text = "";
     let retval=true;
 
@@ -74,8 +74,12 @@ exports.findOne = (req,res) => {
                     if (data.length !== 0)
                     {
                         // Cek KMP
-                        const algorithm = new KnuthMorrisPratt(text, data);
-                        
+                        let algorithm =""
+                        if(Selector==1){
+                        algorithm = new KnuthMorrisPratt(text, data);
+                        }else{
+                            algorithm = new BoyerMoore(text, data);
+                        }
                         let value = algorithm.searchPattern();
         
                         if (value != null)
@@ -108,9 +112,7 @@ exports.findOne = (req,res) => {
                     }
                     else
                     {
-                        res.status(404).send({
-                            message: "Not Found"
-                        });
+                        res.status(200).send("Tidak ada pertanyaan yang tersedia");
                     }
                 })
                 .catch((error) => {

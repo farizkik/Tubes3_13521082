@@ -94,8 +94,10 @@ const Home = () => {
                     Text: Text,
                     Sender: "user"
                 });
-                
-                const response = await axios.get('http://localhost:5000/api/prompts/'+ChatId+'/'+Bubble);
+                var e = document.getElementById("algoselector");
+                var value = e.options[e.selectedIndex].value;
+
+                const response = await axios.get('http://localhost:5000/api/prompts/'+ChatId+'/'+Bubble + '/' + value);
 
                 await axios.post('http://localhost:5000/api/histories',{
                     ChatId: ChatId,
@@ -124,7 +126,7 @@ const Home = () => {
                 <span>+</span>
                 New Chat
             </div>
-            <select name="cars" id="cars" className='algo-select'>
+            <select id="algoselector" className='algo-select'>
                 <option value="KMP" className='algo-item'>Knuth Morris Path</option>
                 <option value="BM" className='algo-item'>Bayer-Moore</option>
             </select>

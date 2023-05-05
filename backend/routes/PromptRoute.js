@@ -8,7 +8,7 @@ module.exports = (app) => {
     const router = express.Router()
 
     router.post("/", prompts.create)
-    router.get("/:ChatId/:BubbleId", prompts.findOne)
+    router.get("/:ChatId/:BubbleId/:Selector", prompts.findOne)
     router.get("/", prompts.findAll)
     router.patch("/:Id", prompts.update)
     router.delete("/:Id", prompts.delete)

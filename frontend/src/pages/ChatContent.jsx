@@ -61,7 +61,10 @@ const ChatContent = () => {
                     Sender: "user"
                 });
 
-                const response = await axios.get('http://localhost:5000/api/prompts/'+ChatId+'/'+Bubble);
+                var e = document.getElementById("algoselector");
+                var value = e.options[e.selectedIndex].value;
+
+                const response = await axios.get('http://localhost:5000/api/prompts/'+ChatId+'/'+Bubble + '/' + value);
 
                 await axios.post('http://localhost:5000/api/histories',{
                     ChatId: ChatId,
