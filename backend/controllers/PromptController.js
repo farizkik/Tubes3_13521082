@@ -9,6 +9,7 @@ const { where } = require("sequelize");
 const db = require("../models");
 const Prompt = db.prompts;
 const History = db.histories;
+const evaluateExpression = require("./arit")
 
 exports.create = (req,res) => {
     const {Question, Answer} = req.body;
