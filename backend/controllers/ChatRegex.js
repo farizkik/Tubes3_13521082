@@ -66,7 +66,7 @@ function respondMessage(exp) {
     
                     if (value != null)
                     {
-                        res.status(200).send(value);
+						return value;
                     }
                     else
                     {
@@ -77,7 +77,7 @@ function respondMessage(exp) {
     
                         if (reply.length == 1)
                         {
-                            res.status(200).send(reply);
+							return reply;
                         }
                         else
                         {
@@ -85,25 +85,19 @@ function respondMessage(exp) {
                             string += reply[0] + '\n';
                             string += reply[1] + '\n';
                             string += reply[2] + '\n';
-    
-                            console.log(string);
-    
-                            res.status(200).send(string);
+
+							return string;
                         }
                     }
                     
                 }
                 else
                 {
-                     res.status(404).send({
-                        message: "Not Found"
-                    });
+					return ("Not Found");
                 }
             })
             .catch((error) => {
-                res.status(500).send({
-                    message : error.message || "Internal Server Error"
-                })
+				return (error.message || "Internal Server Error");
             })
     }
     return null;
