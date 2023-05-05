@@ -1,3 +1,5 @@
+const { KnuthMorrisPratt, BoyerMoore, LevenstheinDistance } = require("./StringFunctions");
+
 // SETUP FILE
 const { where } = require("sequelize");
 const db = require("../models");
@@ -31,6 +33,7 @@ exports.create = (req,res) => {
 
 exports.findOne = (req,res) => {
     const {ChatId,BubbleId} = req.params;
+	let text = "";
 
     History.findAll({
         where:{
@@ -39,9 +42,9 @@ exports.findOne = (req,res) => {
         }
     })
         .then((data)=> {
-            if(data){
-                res.status(200).send("Pertanyaan " + data[0].Text + " tidak dikenali.");
-            } else {
+			text = data[0].Text;
+
+            if(!data){
                 res.status(404).send({
                     message:"Not Found"
                 });
@@ -52,6 +55,44 @@ exports.findOne = (req,res) => {
                 message: error.message || "Internal Server Error"
             })
         })
+
+	Prompt.findAll({
+		where: null,
+	})
+		.then((data) => {
+			if (data.length !== 0)
+			{
+				const algorithm = new KnuthMorrisPratt(text, data);
+
+				let value = algorithm.searchPattern();
+
+				console.log("value = ", value);
+
+				if (value != null)
+				{
+					res.status(200).send({message: value});
+				}
+				else if (value == null)
+				{
+					console.log("aaa");
+				}
+				else
+				{
+					console.log('abc');
+				}
+			}
+			else
+			{
+				res.status(404).send({
+					message: "Not Found"
+				});
+			}
+		})
+		.catch((error) => {
+			res.status(500).send({
+				message : error.message || "Internal Server Error"
+			})
+		})
 }
 
 exports.findAll = (req,res) => {
