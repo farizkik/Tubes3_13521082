@@ -1,8 +1,8 @@
-// const { KnuthMorrisPratt, BoyerMoore, LevenstheinDistance } = require("./StringFunctions");
+const { KnuthMorrisPratt, BoyerMoore, LevenstheinDistance } = require("./StringFunctions");
 
-const KnuthMorrisPratt		= require("./StringFunctions");
-const BoyerMoore			= require("./StringFunctions");
-const LevenstheinDistance	= require("./StringFunctions");
+// const KnuthMorrisPratt		= require("./StringFunctions");
+// const BoyerMoore			= require("./StringFunctions");
+// const LevenstheinDistance	= require("./StringFunctions");
 
 // SETUP FILE
 const { where } = require("sequelize");
@@ -70,8 +70,21 @@ exports.findOne = (req,res) => {
 
 				let value = algorithm.searchPattern();
 
-				// res.status(200).send("when the impostor is sus");
-				res.status(200).send({message: value});
+				if (value != null)
+				{
+					res.status(200).send(value);
+				}
+				else
+				{
+					const levensthein = new LevenstheinDistance(text, data);
+
+					let reply = levensthein.initializeLevensthein();
+
+					if (reply != null)
+					{
+						res.status(200).send(reply);
+					}
+				}
 			}
 			else
 			{

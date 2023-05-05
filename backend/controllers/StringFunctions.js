@@ -145,6 +145,7 @@ class BoyerMoore
 	 */
 	searchPattern()
 	{
+		console.log('ahaha');
 		var patternLength = this.pattern.length;
 		
 		for (var i = 0; i < this.texts.length; i++)
@@ -256,10 +257,15 @@ class LevenstheinDistance
 
 		var denom = (this.texts[this.index].Questionlength > this.pattern.length) ? this.texts[this.index].Question.length : this.pattern.length;
 
-		console.log(1 - (this.distance / denom));
+		if (1 - (this.distance / denom) > 0.90)
+		{
+			return this.texts[this.index].Answer;
+		}
+		else
+		{
+			return null;
+		}
 	}
 };
 
-module.exports = KnuthMorrisPratt;
-module.exports = BoyerMoore;
-module.exports = LevenstheinDistance;
+module.exports = { KnuthMorrisPratt, BoyerMoore, LevenstheinDistance };
