@@ -9,6 +9,7 @@ const { where } = require("sequelize");
 const db = require("../models");
 const Prompt = db.prompts;
 const History = db.histories;
+const evaluateExpression = require("./arit")
 
 exports.create = (req,res) => {
     const {Question, Answer} = req.body;
@@ -66,6 +67,7 @@ exports.findOne = (req,res) => {
 		.then((data) => {
 			if (data.length !== 0)
 			{
+				// Cek KMP
 				const algorithm = new KnuthMorrisPratt(text, data);
 
 				let value = algorithm.searchPattern();
@@ -76,13 +78,25 @@ exports.findOne = (req,res) => {
 				}
 				else
 				{
+					// Cek levensthein
 					const levensthein = new LevenstheinDistance(text, data);
 
 					let reply = levensthein.initializeLevensthein();
 
-					if (reply != null)
+					if (reply.length == 1)
 					{
 						res.status(200).send(reply);
+					}
+					else
+					{
+						let string = "Pertanyaan tidak ditemukan pada database.\nApakah maksud anda\n";
+						string += reply[0] + '\n';
+						string += reply[1] + '\n';
+						string += reply[2] + '\n';
+
+						console.log(string);
+
+						res.status(200).send(string);
 					}
 				}
 			}

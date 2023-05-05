@@ -4,27 +4,30 @@ import {Link} from 'react-router-dom'
 import { SidebarData } from './SidebarData';
 import './NavBar.css'
 import axios from 'axios'
+import { useNavigate, useParams } from 'react-router-dom';
 
 function NavBar() {
     const [sidebar,setSidebar] = useState(false)
 
     const showSidebar = () => setSidebar(!sidebar)
 
-    const [chats, setChat] = useState([]);
+    const navigate = useNavigate();
+
+    const [convos, setConvo] = useState([]);
 
     useEffect(()=>{
-        getChats();
+        getConvos();
     },[]);
     
-    const getChats = async()=>{
+    const getConvos = async()=>{
         const response = await axios.get('http://localhost:5000/api/histories/');
-        setChat(response.data);
+        setConvo(response.data);
     };
 
   return (
     <>
         <div className="navbar1">
-            <Link to="#" className='menu-bars mt-1'>
+            <Link to="#" className='menu-bars mt-1' >
                 <BsIcon.BsFillChatDotsFill onClick={showSidebar}/>
             </Link>
         </div>
@@ -35,7 +38,7 @@ function NavBar() {
                         <BsIcon.BsArrowsAngleContract onClick={showSidebar}/>
                     </Link>
                 </li>
-                <Link to="/" className="nav-menu-items">
+                <Link to="/" className="nav-menu-items" onClick={() => {window.location.href="/"}}>
                     <span className="nav-text">
                     New conversation
                     </span>
@@ -51,7 +54,7 @@ function NavBar() {
                         </li>
                     )
                 })}
-                {chats.map((chat,index) => {
+                {convos.map((chat,index) => {
                     return(
                         <li key={index+10} className='nav-text'>
                             <Link to={'convo/' + chat.ChatId}>

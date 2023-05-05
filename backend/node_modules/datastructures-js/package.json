@@ -1,0 +1,68 @@
+{
+  "name": "datastructures-js",
+  "version": "12.0.0",
+  "description": "production-ready data structures implementation in javascript & typescript.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "keywords": [
+    "data structures typescript",
+    "es6 data structures",
+    "javascript data structures",
+    "data structures",
+    "data structures javascript",
+    "data structures js",
+    "stack",
+    "es6 stack",
+    "queue",
+    "es6 queue",
+    "priority queue",
+    "priorityqueue",
+    "set",
+    "linked list",
+    "linkedlist",
+    "doubly linked list",
+    "doublylinkedlist",
+    "binary search tree",
+    "avl tree",
+    "heap",
+    "min heap",
+    "max heap",
+    "trie",
+    "bst",
+    "graph",
+    "es6 graph",
+    "directed graph",
+    "directedgraph"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eyas-ranjous/datastructures-js.git"
+  },
+  "author": "Eyas Ranjous <eyas.ranjous@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/eyas-ranjous/datastructures-js#readme",
+  "devDependencies": {
+    "eslint": "^6.7.2",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.19.1",
+    "grunt": "^1.0.4",
+    "grunt-eslint": "^22.0.0"
+  },
+  "dependencies": {
+    "@datastructures-js/binary-search-tree": "^5.0.0",
+    "@datastructures-js/deque": "^1.0.3",
+    "@datastructures-js/graph": "^5.1.4",
+    "@datastructures-js/heap": "^4.1.0",
+    "@datastructures-js/linked-list": "^5.2.2",
+    "@datastructures-js/priority-queue": "^6.1.1",
+    "@datastructures-js/queue": "^4.2.1",
+    "@datastructures-js/set": "^4.2.0",
+    "@datastructures-js/stack": "^3.1.3",
+    "@datastructures-js/trie": "^4.2.1"
+  }
+}

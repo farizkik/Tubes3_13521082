@@ -79,8 +79,6 @@ class KnuthMorrisPratt
 					// Found pattern at index
 					k = this.lps[k - 1];
 
-					console.log('among');
-
 					return this.texts[i].Answer;
 				}
 
@@ -184,8 +182,8 @@ class LevenstheinDistance
 	{
 		this.pattern	= inputString;
 		this.texts		= database;
-		this.index		= 0;
-		this.distance	= 999999999;
+		this.index		= [];
+		this.distance	= [];
 	}
 
 	min(a, b, c)
@@ -234,7 +232,7 @@ class LevenstheinDistance
 	{
 		for (var i = 0; i < this.texts.length; i++)
 		{
-			this.dp			= new Array(this.pattern.length);
+			this.dp	= new Array(this.pattern.length);
 
 			for (var j = 0; j < this.pattern.length; j++)
 			{
@@ -246,24 +244,58 @@ class LevenstheinDistance
 				this.dp[j] = temp;
 			}
 
-			console.log(i, this.calculateLevensthein(this.pattern, this.texts[i].Question, this.pattern.length, this.texts[i].Question.length))
+			let value = this.calculateLevensthein(this.pattern, this.texts[i].Question, this.pattern.length, this.texts[i].Question.length);
 
-			if (this.calculateLevensthein(this.pattern, this.texts[i].Question, this.pattern.length, this.texts[i].Question.length) < this.distance)
+			if (this.index.length == 0)
 			{
-				this.index = i;
-				this.distance = this.calculateLevensthein(this.pattern, this.texts[i].Question, this.pattern.length, this.texts[i].Question.length);
+				this.index.push(i);
+				this.distance.push(value);
+			}
+			else
+			{
+				let isFound = false;
+
+				for (let j = 0; j < this.index.length; j++)
+				{
+					if (value < this.distance[j])
+					{
+						this.index.splice(j, 0, i);
+						this.distance.splice(j, 0, value);
+						isFound = true;
+						break;
+					}
+				}
+
+				if (!isFound)
+				{
+					this.index.push(i);
+					this.distance.push(value);
+				}
 			}
 		}
 
-		var denom = (this.texts[this.index].Questionlength > this.pattern.length) ? this.texts[this.index].Question.length : this.pattern.length;
+		console.log(this.index);
+		console.log(this.distance);
 
-		if (1 - (this.distance / denom) > 0.90)
+		let denom = (this.texts[this.index[0]].Questionlength > this.pattern.length) ? this.texts[this.index[0]].Question.length : this.pattern.length;
+
+		let value = 1 - (this.distance[0] / denom);
+
+		console.log(value);
+
+		if (value > 0.9)
 		{
-			return this.texts[this.index].Answer;
+			console.log('here');
+			return this.texts[this.index[0]].Answer;
 		}
 		else
 		{
-			return null;
+			console.log('there');
+			let array = [this.texts[this.index[0]].Question,
+						 this.texts[this.index[1]].Question,
+						 this.texts[this.index[2]].Question];
+
+			return array;
 		}
 	}
 };

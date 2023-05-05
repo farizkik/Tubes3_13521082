@@ -5,10 +5,10 @@ import EditPrompt from "./pages/EditPrompt";
 import NavBar from "./components/NavBar";
 import ChatContent from "./pages/ChatContent";
 import Home from "./pages/Home";
+
 function App() {
   return (
-    <BrowserRouter>
-      <NavBar/>
+    <BrowserRouter className="App">
       <Routes>
         <Route path="database" element={<PromptList/>}/>
         <Route path="/" element={<Home/>}/>
