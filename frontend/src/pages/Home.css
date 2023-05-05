@@ -1,11 +1,179 @@
+* {
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.under{
+    position: absolute;
+    bottom: 15px;
+    text-align: center;
+    width: 100%;
+    height: 150px;
+    background: rgb(56, 54, 85);
+    z-index: 90;
+}
+
+
+.contentbox{
+    flex:1;
+    background-color: #343541;
+    position: relative;
+}
+
+.App{
+    display: flex;
+    text-align: center;
+    background-color: #282c34;
+    color: white;
+    position: absolute;
+    top:0;bottom: 0;left: 0;right: 0;
+}
+
+.sidemenu {
+    width: 260px;
+    background-color: #202123;
+    padding: 10px;
+}
+
+.new-chat{
+    padding: 12px;
+    border: 1px solid white;
+    border-radius: 5px;
+    text-align: left;
+    transition: ease 0.2s all;
+}
+
+.new-chat span{
+    padding-right: 12px;
+}
+
+.new-chat:hover{
+    background-color: rgb(255, 255, 255,0.1);
+}
+
+.scroll-convos{
+    max-height: 80%;
+    margin:10px;
+    overflow: auto;
+}
+
+.write-chat{
+    padding: 24px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/*
+.write-chat button{
+    position: absolute;
+    top:40px;
+    right: 110px;
+}*/
+
+.algo-select{
+    margin-top: 12px;
+    width: 100%;
+    background-color: rgb(255, 255, 255,0.1);
+    color: white;
+    padding: 12px;
+    border-radius: 5px;
+}
+
+.algo-item{
+    color:black;
+
+}
+
+.input-area{
+    max-height: 1000px;
+    background-color: rgb(64, 65, 79,0.7);
+    color:white;
+    padding: 12px;
+    width: 90%;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    box-shadow: 0 0 8px 0px  rgba(0,0,0,0.25)
+}
+
+.input-area:hover{
+    background-color: rgba(64,65,79,0.1)
+}
+
+.button-send{
+    width: 90%;
+    background-color: rgb(255,255,255,0.3);
+    color: rgb(217, 210, 210);
+    padding: 3px;
+}
+
+.button-send:hover{
+    background-color: rgb(255,255,255,0.1);
+}
+
+.chat-log{
+    padding: 24px;
+    text-align: left;
+    overflow: auto;
+    white-space: pre-line;
+    max-height: 100%;
+    max-width: 100%;
+    width: 100%;
+}
+
+.chat-message{
+    padding: 12px;
+    padding: left 40px right 40px;
+    width: 100%;
+    max-width: 100%;    
+}
+
+.width-changer{
+    width: 100%;
+    max-width: 100%;
+}
+
+.bottom-block{
+    height: 100px;
+}
+
+.message{
+    padding: 12px;   
+    font-size: 17px; 
+    
+}
+
 .user {
-    background-color: floralwhite;
-    font-size: 20px;
+    
+    display: flex;
     margin: 5px 0px;
 }
 
 .ai {
-    background-color:rgb(193, 208, 238);
-    font-size: 20px;
+    background-color:rgb(255,255,255,0.1);
+    display: flex;
     margin: 5px 0px;
+    
 }
+
